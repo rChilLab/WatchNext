@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movie & Series Finder</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="app-container">
+        <!-- Seitenleiste und Hauptinhalt (HTML unverändert) -->
+        <aside class="sidebar">
+            <div class="sidebar-section"><h3>Suche</h3><form id="search-form"><input type="text" id="search-input" class="text-input" placeholder="Film oder Serie..." autocomplete="off"></form></div>
+            <div class="sidebar-section"><h3>Aktionen</h3><div class="action-buttons"><button id="random-movie-btn" class="btn btn-fullwidth btn-primary">Zufälliger Film</button><button id="random-series-btn" class="btn btn-fullwidth btn-primary">Zufällige Serie</button><button id="watchlist-btn" class="btn btn-fullwidth btn-secondary">Watchlist</button></div></div>
+            <div class="sidebar-section"><h3>Genres</h3><div id="genre-list" class="genre-list-container"><p>API Key benötigt...</p></div></div>
+            <div class="sidebar-section"><button id="clear-filter-btn" class="btn btn-fullwidth btn-danger hidden">Filter löschen</button></div>
+            <div class="settings-toggle-container"><button id="settings-btn" class="btn btn-fullwidth btn-secondary">Einstellungen</button></div>
+            <div class="sidebar-attribution">
+                <span>Daten von</span>
+                <a href="https://www.themoviedb.org/" target="_blank" rel="noopener noreferrer" title="The Movie Database">
+                  <img src="img/tmdb-logo.svg" alt="The Movie Database Logo">
+                </a>
+            </div>
+        </aside>
+        <main class="main-content"><div id="result-div"><div class="placeholder"><h2>Willkommen!</h2><p>Durchsuche Tausende von Filmen und Serien.<br>Öffne die Einstellungen, um deinen TMDb API-Key einzugeben.</p></div></div></main>
+    </div>
+
+    <!-- ===== GLOBALE OVERLAYS (HTML unverändert) ===== -->
+    <div id="detail-overlay" class="overlay hidden">
+        <div id="detail-panel" class="panel">
+            <button class="panel-close-btn">&times;</button>
+            <div id="detail-content"></div>
+        </div>
+    </div>
+    <div id="settings-overlay" class="overlay hidden">
+        <div id="settings-panel" class="panel">
+             <button class="panel-close-btn">&times;</button>
+            <h2>Einstellungen</h2>
+            <div class="settings-section"><h4>TMDb API Key</h4><input type="password" id="api-key-input" class="text-input" placeholder="Dein API Key..."><button id="save-api-key-btn" class="btn btn-primary" style="margin-top: 10px;">Speichern</button></div>
+            <div class="settings-section"><h4>Sprache & Region</h4><select id="language-select" class="text-input"></select></div>
+            <div class="settings-section"><h4>Meine Streaming-Dienste</h4><input type="search" id="provider-search" class="text-input" placeholder="Anbieter suchen..."><div id="provider-selection-container"><p>Wähle eine Sprache/Region, um Anbieter zu laden.</p></div></div>
+            <div class="settings-section"><h4>Theme</h4><button id="theme-toggle" class="btn btn-secondary"></button></div>
+        </div>
+    </div>
+    <div id="trailer-overlay" class="overlay hidden">
+        <div class="trailer-container">
+            <button class="panel-close-btn trailer-close-btn">&times;</button>
+            <iframe id="youtube-trailer-iframe" src="" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>
+        </div>
+    </div>
+<script src="script.js"></script>
+</body>
+</html>
