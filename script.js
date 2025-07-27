@@ -30,6 +30,49 @@ document.addEventListener('DOMContentLoaded', () => {
     let currentTheme = localStorage.getItem('theme') || 'light';
     let allGenres = [];
 
+    const renderResults = (results, type) => {
+    resultDiv.innerHTML = ''; // Leert vorherige Ergebnisse
+    if (results.length === 0) {
+        resultDiv.innerHTML = '<div class="info-message"><p>Keine Ergebnisse gefunden.</p></div>';
+        return;
+    }
+
+    results.forEach(item => {
+        // Überspringe Einträge ohne Poster
+        if (!item.poster_path) return;
+
+        const card = document.createElement('div');
+        card.className = 'content-card';
+        card.dataset.id = item.id;
+        card.dataset.type = item.media_type || type;
+
+        const title = item.title || item.name;
+        const releaseDate = item.release_date || item.first_air_date;
+        const year = releaseDate ? new Date(releaseDate).getFullYear() : 'N/A';
+
+        // --- NEU: Logik für das Bewertungs-Badge ---
+        let ratingBadgeHTML = '';
+        // Badge nur anzeigen, wenn eine Bewertung vorhanden und die Stimmenanzahl relevant ist
+        if (item.vote_average && item.vote_count > 10) {
+            const rating = item.vote_average.toFixed(1); // Auf eine Nachkommastelle runden
+            ratingBadgeHTML = `<div class="rating-badge">${rating}</div>`;
+        }
+        // --- Ende der neuen Logik ---
+
+        // HTML für die Karte, jetzt inklusive des (optionalen) Badges
+        card.innerHTML = `
+            ${ratingBadgeHTML}
+            <img src="https://image.tmdb.org/t/p/w342${item.poster_path}" alt="${title}" loading="lazy">
+            <div class="card-info">
+                <h4>${title}</h4>
+                <p>${year}</p>
+            </div>
+        `;
+        resultDiv.appendChild(card);
+    });
+};
+
+
     const apiRequest = async (endpoint, params = '') => {
         if (!tmdbApiKey) { throw new Error("API Key ist nicht gesetzt."); }
         const region = selectedLanguage;
