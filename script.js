@@ -54,7 +54,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // --- NEU: Logik für das Bewertungs-Badge ---
         let ratingBadgeHTML = '';
         // Badge nur anzeigen, wenn eine Bewertung vorhanden und die Stimmenanzahl relevant ist
-        if (item.vote_average && item.vote_count > 10) {
+        if (typeof item.vote_average === 'number' && item.vote_average > 0) {
             const rating = item.vote_average.toFixed(1); // Auf eine Nachkommastelle runden
             ratingBadgeHTML = `<div class="rating-badge">${rating}</div>`;
         }
@@ -98,8 +98,16 @@ document.addEventListener('DOMContentLoaded', () => {
             const releaseDate = item.release_date || item.first_air_date;
             const year = releaseDate ? new Date(releaseDate).getFullYear() : 'N/A';
             const posterPath = item.poster_path ? `https://image.tmdb.org/t/p/w342${item.poster_path}` : 'https://via.placeholder.com/342x513.png?text=Kein+Bild';
+
+            let ratingBadgeHTML = '';
+            if (typeof item.vote_average === 'number' && item.vote_average > 0) {
+                const rating = item.vote_average.toFixed(1);
+                ratingBadgeHTML = `<div class="rating-badge">${rating}</div>`;
+            }
+
             return `
                 <div class="content-card" data-id="${item.id}" data-type="${item.media_type || (item.title ? 'movie' : 'tv')}">
+                    ${ratingBadgeHTML}
                     <img src="${posterPath}" alt="${title}" loading="lazy">
                     <div class="card-info">
                         <h4>${title}</h4>
@@ -199,6 +207,21 @@ document.addEventListener('DOMContentLoaded', () => {
                        </div>
                     </div>
                 `;
+            }
+
+            // Bewertungs-Badge für die Detailansicht
+            let detailRatingBadge = detailPanel.querySelector('.rating-badge');
+            if (typeof details.vote_average === 'number' && details.vote_average > 0) {
+                const rating = details.vote_average.toFixed(1);
+                if (!detailRatingBadge) {
+                    detailRatingBadge = document.createElement('div');
+                    detailRatingBadge.className = 'rating-badge';
+                    detailPanel.appendChild(detailRatingBadge);
+                }
+                detailRatingBadge.textContent = rating;
+                detailRatingBadge.style.display = 'flex';
+            } else if (detailRatingBadge) {
+                detailRatingBadge.style.display = 'none';
             }
 
             detailContentDiv.innerHTML = `
