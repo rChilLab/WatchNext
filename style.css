@@ -101,7 +101,7 @@ body.dark-mode .genre-btn { border-color: var(--border-dark); color: var(--text-
 .genre-btn.active { background-color: var(--accent); color: var(--accent-text); border-color: var(--accent); font-weight: 600; }
 #clear-filter-btn { margin-top: 12px; }
 #result-div { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 20px; }
-.content-card { background-color: var(--card-light); border-radius: var(--radius); box-shadow: var(--shadow-dp1); overflow: hidden; cursor: pointer; transition: var(--transition); }
+.content-card { background-color: var(--card-light); border-radius: var(--radius); box-shadow: var(--shadow-dp1); overflow: hidden; cursor: pointer; transition: var(--transition); position: relative; }
 body.dark-mode .content-card { background-color: var(--card-dark); }
 .content-card:hover { transform: translateY(-5px); box-shadow: var(--shadow-dp2); }
 .content-card img { width: 100%; height: auto; display: block; background-color: var(--bg-light); }
@@ -250,18 +250,6 @@ body.dark-mode .settings-section h4 { border-bottom-color: var(--border-dark); }
     min-height: 100vh;
 }
 
-/* Suchen Sie diese Regel in Ihrer style.css und ERSETZEN Sie sie */
-.content-card {
-    background-color: var(--card-light);
-    border-radius: var(--radius);
-    box-shadow: var(--shadow-dp1);
-    overflow: hidden;
-    cursor: pointer;
-    transition: var(--transition);
-    position: relative; /* WICHTIG: Anker für das absolut positionierte Badge */
-}
-
-/* Fügen Sie diesen komplett NEUEN Block zu Ihrer style.css hinzu */
 .rating-badge {
     position: absolute;
     top: 8px;

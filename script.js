@@ -98,8 +98,16 @@ document.addEventListener('DOMContentLoaded', () => {
             const releaseDate = item.release_date || item.first_air_date;
             const year = releaseDate ? new Date(releaseDate).getFullYear() : 'N/A';
             const posterPath = item.poster_path ? `https://image.tmdb.org/t/p/w342${item.poster_path}` : 'https://via.placeholder.com/342x513.png?text=Kein+Bild';
+
+            let ratingBadgeHTML = '';
+            if (item.vote_average && item.vote_count > 10) {
+                const rating = item.vote_average.toFixed(1);
+                ratingBadgeHTML = `<div class="rating-badge">${rating}</div>`;
+            }
+
             return `
                 <div class="content-card" data-id="${item.id}" data-type="${item.media_type || (item.title ? 'movie' : 'tv')}">
+                    ${ratingBadgeHTML}
                     <img src="${posterPath}" alt="${title}" loading="lazy">
                     <div class="card-info">
                         <h4>${title}</h4>
