@@ -15,6 +15,9 @@
 *   **Trailer-Funktion:** Sehen Sie sich den offiziellen Trailer direkt in der App an (falls auf YouTube verfügbar).
 *   **Watchlist:** Speichern Sie interessante Filme und Serien auf einer persönlichen Watchlist, um sie nicht zu vergessen.
 *   **Demnächst:** Zeigt anstehende Filmveröffentlichungen per Knopfdruck.
+*   **TMDb-Link:** In der Detailansicht führt ein Button direkt zur Seite des Films oder der Serie auf TMDb.
+
+
 *   **Keine Registrierung:** Alle Daten, inklusive Ihres TMDb API-Schlüssels, werden sicher nur in Ihrem Browser gespeichert.
 
 ## 🚀 Inbetriebnahme

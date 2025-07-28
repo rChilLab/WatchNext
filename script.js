@@ -222,6 +222,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         <div id="main-actions">
                              ${bestTrailer ? `<button class="btn" data-action="trailer" data-key="${bestTrailer.key}">Trailer ansehen</button>` : ''}
                              <button class="btn ${watchlistBtnClass}" data-action="watchlist" data-id="${details.id}" data-type="${type}" data-title="${title}" data-poster="${details.poster_path}" data-year="${year}">${watchlistBtnText}</button>
+                             <a class="btn" href="https://www.themoviedb.org/${type}/${details.id}" target="_blank" rel="noopener noreferrer">Auf TMDb öffnen</a>
                         </div>
                         ${fromRandom ? `
                             <button class="btn" id="next-suggestion-btn" data-action="next-random" data-type="${type}" title="Nächster Vorschlag">${nextArrowSVG}</button>
@@ -266,7 +267,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             const filtered = allResults.filter(item => item.poster_path);
 
-        searchInput.value = "";
+          searchInput.value = "";
         showLoading();
         try {
             const data = await apiRequest("movie/upcoming");
