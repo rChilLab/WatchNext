@@ -256,11 +256,22 @@ document.addEventListener('DOMContentLoaded', () => {
     const handleShowWatchlist = () => { clearActiveFilter(); searchInput.value = ''; if (watchlist.length > 0) { const watchlistWithYears = watchlist.map(item => ({ ...item, release_date: `${item.year}-01-01` })); renderContent(watchlistWithYears); } else { resultDiv.innerHTML = '<div class="info-message"><h3>Deine Watchlist ist leer.</h3></div>'; } };
     const handleUpcomingMovies = async () => {
         clearActiveFilter();
+        searchInput.value = '';
+        showLoading();
+        try {
+            let allResults = [];
+            for (let page = 1; page <= 3; page++) {
+                const data = await apiRequest('movie/upcoming', `&page=${page}`);
+                allResults = allResults.concat(data.results);
+            }
+            const filtered = allResults.filter(item => item.poster_path);
+
         searchInput.value = "";
         showLoading();
         try {
             const data = await apiRequest("movie/upcoming");
             const filtered = data.results.filter(item => item.poster_path);
+          
             renderContent(filtered);
         } catch (error) {
             resultDiv.innerHTML = `<div class="error">${error.message}</div>`;
