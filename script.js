@@ -262,6 +262,19 @@ document.addEventListener('DOMContentLoaded', () => {
         try {
             const data = await apiRequest('movie/upcoming');
             const filtered = data.results.filter(item => item.poster_path);
+            let allResults = [];
+            for (let page = 1; page <= 3; page++) {
+                const data = await apiRequest('movie/upcoming', `&page=${page}`);
+                allResults = allResults.concat(data.results);
+            }
+            const filtered = allResults.filter(item => item.poster_path);
+
+          searchInput.value = "";
+        showLoading();
+        try {
+            const data = await apiRequest("movie/upcoming");
+            const filtered = data.results.filter(item => item.poster_path);
+         
             renderContent(filtered);
         } catch (error) {
             resultDiv.innerHTML = `<div class="error">${error.message}</div>`;
