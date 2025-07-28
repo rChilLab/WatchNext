@@ -5,6 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const searchInput = document.getElementById('search-input');
     const randomMovieBtn = document.getElementById('random-movie-btn');
     const randomSeriesBtn = document.getElementById('random-series-btn');
+    const upcomingMovieBtn = document.getElementById('upcoming-movie-btn');
     const watchlistBtn = document.getElementById('watchlist-btn');
     const resultDiv = document.getElementById('result-div');
     const genreListDiv = document.getElementById('genre-list');
@@ -221,6 +222,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         <div id="main-actions">
                              ${bestTrailer ? `<button class="btn" data-action="trailer" data-key="${bestTrailer.key}">Trailer ansehen</button>` : ''}
                              <button class="btn ${watchlistBtnClass}" data-action="watchlist" data-id="${details.id}" data-type="${type}" data-title="${title}" data-poster="${details.poster_path}" data-year="${year}">${watchlistBtnText}</button>
+                             <a class="btn" href="https://www.themoviedb.org/${type}/${details.id}" target="_blank" rel="noopener noreferrer">Auf TMDb öffnen</a>
                         </div>
                         ${fromRandom ? `
                             <button class="btn" id="next-suggestion-btn" data-action="next-random" data-type="${type}" title="Nächster Vorschlag">${nextArrowSVG}</button>
@@ -253,6 +255,23 @@ document.addEventListener('DOMContentLoaded', () => {
     };
     const closeTrailer = () => { youtubeIframe.src = ''; closeOverlay(trailerOverlay); };
     const handleShowWatchlist = () => { clearActiveFilter(); searchInput.value = ''; if (watchlist.length > 0) { const watchlistWithYears = watchlist.map(item => ({ ...item, release_date: `${item.year}-01-01` })); renderContent(watchlistWithYears); } else { resultDiv.innerHTML = '<div class="info-message"><h3>Deine Watchlist ist leer.</h3></div>'; } };
+    const handleUpcomingMovies = async () => {
+        clearActiveFilter();
+        searchInput.value = '';
+        showLoading();
+        try {
+            let allResults = [];
+            for (let page = 1; page <= 3; page++) {
+                const data = await apiRequest('movie/upcoming', `&page=${page}`);
+                allResults = allResults.concat(data.results);
+            }
+            const filtered = allResults.filter(item => item.poster_path);
+            renderContent(filtered);
+        } catch (error) {
+            resultDiv.innerHTML = `<div class="error">${error.message}</div>`;
+        }
+    };
+
     const openOverlay = (overlay) => { overlay.classList.remove('hidden'); body.classList.add('body-no-scroll'); };
     const closeOverlay = (overlay) => { overlay.classList.add('hidden'); body.classList.remove('body-no-scroll'); };
     const renderUnifiedGenres = () => { genreListDiv.innerHTML = allGenres.map(genre => `<button class="genre-btn" data-id="${genre.id}" data-name="${genre.name}">${genre.name}</button>`).join(''); };
@@ -270,6 +289,7 @@ document.addEventListener('DOMContentLoaded', () => {
     searchForm.addEventListener('submit', handleSearch);
     randomMovieBtn.addEventListener('click', () => handleRandomContent('movie'));
     randomSeriesBtn.addEventListener('click', () => handleRandomContent('tv'));
+    upcomingMovieBtn.addEventListener("click", handleUpcomingMovies);
     watchlistBtn.addEventListener('click', handleShowWatchlist);
     genreListDiv.addEventListener('click', handleGenreClick);
     clearFilterBtn.addEventListener('click', () => { clearActiveFilter(); searchInput.value = ''; resultDiv.innerHTML = '<div class="placeholder"><p>Suche nach etwas oder wähle ein Genre.</p></div>'; });
