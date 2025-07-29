@@ -118,6 +118,44 @@ document.addEventListener('DOMContentLoaded', () => {
         }).join('');
     };
 
+    const renderUpcomingContent = (contentList) => {
+        if (!contentList || contentList.length === 0) {
+            resultDiv.innerHTML = '<div class="info-message"><p>Keine Ergebnisse gefunden.</p></div>';
+            return;
+        }
+        resultDiv.innerHTML = contentList.map(item => {
+            const title = item.title;
+            const releaseDate = item.release_date;
+            const year = releaseDate ? new Date(releaseDate).getFullYear() : 'N/A';
+            const posterPath = item.poster_path ? `https://image.tmdb.org/t/p/w342${item.poster_path}` : 'https://via.placeholder.com/342x513.png?text=Kein+Bild';
+
+            let ratingBadgeHTML = '';
+            if (item.vote_average && item.vote_count > 10) {
+                const rating = item.vote_average.toFixed(1);
+                ratingBadgeHTML = `<div class="rating-badge">${rating}</div>`;
+            }
+
+            let providerHTML = '';
+            if (item.providers && item.providers.length > 0) {
+                providerHTML = `<div class="provider-list">${item.providers.map(p => `<div class="provider-logo" title="${p.provider_name}"><img src="https://image.tmdb.org/t/p/w92${p.logo_path}" alt="${p.provider_name}"></div>`).join('')}</div>`;
+            } else {
+                providerHTML = '<p>Kinostart</p>';
+            }
+
+            return `
+                <div class="content-card" data-id="${item.id}" data-type="movie">
+                    ${ratingBadgeHTML}
+                    <img src="${posterPath}" alt="${title}" loading="lazy">
+                    <div class="card-info">
+                        <h4>${title}</h4>
+                        <p>${year}</p>
+                        ${providerHTML}
+                    </div>
+                </div>
+            `;
+        }).join('');
+    };
+
     const showLoading = () => { resultDiv.innerHTML = '<div class="loading"><p>Lade...</p></div>'; };
 
     const handleSearch = async (event) => {
@@ -274,7 +312,21 @@ document.addEventListener('DOMContentLoaded', () => {
                 allResults = allResults.concat(data.results);
             }
             const filtered = allResults.filter(item => item.poster_path);
-            renderContent(filtered);
+
+            const moviesWithProviders = await Promise.all(filtered.map(async m => {
+                try {
+                    const providerData = await apiRequest(`movie/${m.id}/watch/providers`);
+                    const providerInfo = providerData.results?.[selectedLanguage];
+                    m.providers = providerInfo?.flatrate || [];
+                    m.noProviderInfo = !providerInfo;
+                } catch (e) {
+                    m.providers = [];
+                    m.noProviderInfo = true;
+                }
+                return m;
+            }));
+
+            renderUpcomingContent(moviesWithProviders);
         } catch (error) {
             resultDiv.innerHTML = `<div class="error">${error.message}</div>`;
         }
