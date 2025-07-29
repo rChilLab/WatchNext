@@ -50,6 +50,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const title = item.title || item.name;
         const releaseDate = item.release_date || item.first_air_date;
         const year = releaseDate ? new Date(releaseDate).getFullYear() : 'N/A';
+        const formattedDate = releaseDate ? new Date(releaseDate).toLocaleDateString('de-DE') : 'TBA';
 
         // --- NEU: Logik für das Bewertungs-Badge ---
         let ratingBadgeHTML = '';
@@ -66,7 +67,7 @@ document.addEventListener('DOMContentLoaded', () => {
             <img src="https://image.tmdb.org/t/p/w342${item.poster_path}" alt="${title}" loading="lazy">
             <div class="card-info">
                 <h4>${title}</h4>
-                <p>${year}</p>
+                <p>${formattedDate}</p>
             </div>
         `;
         resultDiv.appendChild(card);
@@ -97,6 +98,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const title = item.title || item.name;
             const releaseDate = item.release_date || item.first_air_date;
             const year = releaseDate ? new Date(releaseDate).getFullYear() : 'N/A';
+            const formattedDate = releaseDate ? new Date(releaseDate).toLocaleDateString('de-DE') : 'TBA';
             const posterPath = item.poster_path ? `https://image.tmdb.org/t/p/w342${item.poster_path}` : 'https://via.placeholder.com/342x513.png?text=Kein+Bild';
 
             let ratingBadgeHTML = '';
@@ -111,7 +113,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     <img src="${posterPath}" alt="${title}" loading="lazy">
                     <div class="card-info">
                         <h4>${title}</h4>
-                        <p>${year}</p>
+                        <p>${formattedDate}</p>
                     </div>
                 </div>
             `;

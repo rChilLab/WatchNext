@@ -16,6 +16,7 @@
 *   **Watchlist:** Speichern Sie interessante Filme und Serien auf einer persönlichen Watchlist, um sie nicht zu vergessen.
 *   **Demnächst:** Zeigt anstehende Filmveröffentlichungen und ihre Streaming-Verfügbarkeit, sofern bekannt.
 *   **Bewertungs-Badge:** Die durchschnittliche Nutzerwertung wird als kleines Badge direkt auf jedem Poster angezeigt.
+*   **Veröffentlichungsdatum:** Jede Karte zeigt jetzt den genauen Release-Termin an.
 *   **TMDb-Link:** In der Detailansicht führt ein Button direkt zur Seite des Films oder der Serie auf TMDb.
 *   **Keine Registrierung:** Alle Daten, inklusive Ihres TMDb API-Schlüssels, werden sicher nur in Ihrem Browser gespeichert.
 
